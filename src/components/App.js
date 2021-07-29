@@ -16,7 +16,7 @@ class App extends Component {
         <p>Hey {this.state.Name}, you are the best!</p>
         <button onClick={this.handleClick}>Change Name</button>
         <pre>{JSON.stringify(this.state, null, 2)}</pre>
-        <Child Name="Nirankar" MainName={this.state.Name} />
+        <Child Name="Nirankar" MainName={this.state.Name} handleClick={this.handleClick} />
       </div>
     );
   }
