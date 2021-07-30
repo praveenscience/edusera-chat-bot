@@ -5,6 +5,7 @@ import GuestImg from "../../assets/guest.png";
 class ChatBot extends Component {
   state = {
     Open: false,
+    GuestMsg: "",
     Messages: [
       {
         Text: "Hey there! I am a ChatBot! Type start!",
@@ -19,6 +20,11 @@ class ChatBot extends Component {
   toggleChatBox = () => {
     this.setState({
       Open: !this.state.Open
+    });
+  };
+  handleGuestMsgChange = e => {
+    this.setState({
+      GuestMsg: e.target.value
     });
   };
   render() {
@@ -37,7 +43,13 @@ class ChatBot extends Component {
                 </li>
               ))}
             </ul>
-            <form className="ChatBot-Input"></form>
+            <form className="ChatBot-Input">
+              <input
+                type="text"
+                value={this.state.GuestMsg}
+                onChange={this.handleGuestMsgChange}
+              />
+            </form>
           </div>
         )}
         <div className="ChatBot-Trigger">
