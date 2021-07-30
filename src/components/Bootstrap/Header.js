@@ -1,10 +1,11 @@
 import React from "react";
 
-const Header = ({ children, className, containerClass }) => {
+const Header = ({ children, className, containerClass, dark }) => {
+  dark = dark ? "dark" : "light";
   return (
     <nav
       className={
-        "navbar navbar-light bg-light" + (className ? " " + className : "")
+        `navbar navbar-${dark} bg-${dark}` + (className ? " " + className : "")
       }
     >
       <div
