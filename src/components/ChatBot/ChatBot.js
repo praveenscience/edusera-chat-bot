@@ -27,6 +27,20 @@ class ChatBot extends Component {
       GuestMsg: e.target.value
     });
   };
+  handleGuestMsgSubmit = e => {
+    e.preventDefault();
+    const Text = this.state.GuestMsg;
+    this.setState({
+      GuestMsg: "",
+      Messages: [
+        ...this.state.Messages,
+        {
+          Text,
+          Bot: false
+        }
+      ]
+    });
+  };
   render() {
     return (
       <div className="ChatBot-Wrapper">
@@ -43,7 +57,10 @@ class ChatBot extends Component {
                 </li>
               ))}
             </ul>
-            <form className="ChatBot-Input">
+            <form
+              className="ChatBot-Input"
+              onSubmit={this.handleGuestMsgSubmit}
+            >
               <input
                 type="text"
                 value={this.state.GuestMsg}
