@@ -6,7 +6,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header>ChatBot Without AI</Header>
+        <Header containerClass="justify-content-center">
+          ChatBot Without AI
+        </Header>
       </div>
     );
   }
