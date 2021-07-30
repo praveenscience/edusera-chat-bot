@@ -6,14 +6,11 @@ class ChatBot extends Component {
   state = {
     Open: false,
     GuestMsg: "",
+    ChatBotState: 0,
     Messages: [
       {
-        Text: "Hey there! I am a ChatBot! Type start!",
+        Text: "Hey there! I am a ChatBot! Type start to begin...",
         Bot: true
-      },
-      {
-        Text: "Hey ChatBot! You look beautiful!",
-        Bot: false
       }
     ]
   };
@@ -27,19 +24,61 @@ class ChatBot extends Component {
       GuestMsg: e.target.value
     });
   };
+  botAction = () => {
+    const LastMessage = [...this.state.Messages].reverse()[0].Text;
+    if (
+      LastMessage.toLowerCase() === "start" &&
+      this.state.ChatBotState === 0
+    ) {
+      const Text =
+        "Hey Guest, thanks for starting me up! Please enter your github username.";
+      this.setState({
+        ChatBotState: 1,
+        Messages: [
+          ...this.state.Messages,
+          {
+            Text,
+            Bot: true
+          }
+        ]
+      });
+    }
+    if (this.state.ChatBotState === 1) {
+      const Text = `Thanks for providing ${LastMessage} as your GitHub username...`;
+      this.setState({
+        ChatBotState: 2,
+        Messages: [
+          ...this.state.Messages,
+          {
+            Text,
+            Bot: true
+          },
+          {
+            Text: "Let's look it up with GitHub... Please wait...",
+            Bot: true
+          }
+        ]
+      });
+    }
+  };
   handleGuestMsgSubmit = e => {
     e.preventDefault();
     const Text = this.state.GuestMsg;
-    this.setState({
-      GuestMsg: "",
-      Messages: [
-        ...this.state.Messages,
-        {
-          Text,
-          Bot: false
-        }
-      ]
-    });
+    this.setState(
+      {
+        GuestMsg: "",
+        Messages: [
+          ...this.state.Messages,
+          {
+            Text,
+            Bot: false
+          }
+        ]
+      },
+      () => {
+        this.botAction();
+      }
+    );
   };
   render() {
     return (
