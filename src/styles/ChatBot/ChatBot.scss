@@ -1,2 +1,19 @@
 .ChatBot {
+  &-Wrapper {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
+  &-Messages {
+  }
+  &-Trigger {
+    img {
+      cursor: pointer;
+      width: 75px;
+      padding: 10px;
+      background-color: #ddf;
+      border-radius: 100%;
+      margin: 25px;
+    }
+  }
 }
