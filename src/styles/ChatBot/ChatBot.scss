@@ -5,8 +5,47 @@
     right: 0;
   }
   &-Messages {
+    background-color: #ccf;
+    margin: 0 10px -20px;
+    border-radius: 10px;
+    padding: 10px;
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        img {
+          max-width: 35px;
+          margin-right: 10px;
+          background-color: #eef;
+          padding: 5px;
+          border-radius: 10px;
+        }
+        p {
+          padding: 10px;
+          border-radius: 5px;
+          background-color: #fff;
+          margin: 0;
+          flex-grow: 1;
+        }
+        &.Guest {
+          img {
+            order: 2;
+            margin-right: 0;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
   }
   &-Trigger {
+    text-align: right;
     img {
       cursor: pointer;
       width: 75px;
