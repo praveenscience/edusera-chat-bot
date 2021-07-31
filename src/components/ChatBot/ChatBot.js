@@ -25,6 +25,10 @@ class ChatBot extends Component {
       GuestMsg: e.target.value
     });
   };
+  componentDidUpdate() {
+    document.querySelector("#messages").scrollTop =
+      document.querySelector("#messages").scrollHeight;
+  }
   botAction = () => {
     const PersonName = this.state.GitHubUser
       ? this.state.GitHubUser.name
@@ -331,7 +335,7 @@ class ChatBot extends Component {
       <div className="ChatBot-Wrapper">
         {this.state.Open && (
           <div className="ChatBot-Messages">
-            <ul>
+            <ul id="messages">
               {this.state.Messages.map((msg, key) => (
                 <li key={key} className={msg.Bot ? "ChatBot" : "Guest"}>
                   <img
