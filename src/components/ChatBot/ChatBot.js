@@ -74,7 +74,21 @@ class ChatBot extends Component {
                 Bot: true
               },
               {
-                Text: "So what do you want to do now?",
+                Text: (
+                  <>
+                    So what do you want to do now? Please enter one of the
+                    options here:
+                    <br />- bio
+                    <br />- company
+                    <br />- avatar
+                    <br />- blog site
+                    <br />- location
+                    <br />- can hire
+                    <br />- followers
+                    <br />- following
+                    <br />- reset
+                  </>
+                ),
                 Bot: true
               }
             ]
