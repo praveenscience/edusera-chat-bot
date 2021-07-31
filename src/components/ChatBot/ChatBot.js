@@ -26,6 +26,11 @@ class ChatBot extends Component {
     });
   };
   botAction = () => {
+    const PersonName = this.state.GitHubUser
+      ? this.state.GitHubUser.name
+        ? this.state.GitHubUser.name
+        : this.state.GitHubUser.login
+      : null;
     const LastMessage = [...this.state.Messages].reverse()[0].Text;
     if (
       LastMessage.toLowerCase() === "start" &&
@@ -63,6 +68,11 @@ class ChatBot extends Component {
       fetch("https://api.github.com/users/" + LastMessage)
         .then(res => res.json())
         .then(GitHubUser => {
+          const PersonName = this.state.GitHubUser
+            ? this.state.GitHubUser.name
+              ? this.state.GitHubUser.name
+              : this.state.GitHubUser.login
+            : null;
           const Text = `Hey ${
             GitHubUser.name ? GitHubUser.name : GitHubUser.login
           }! I found you! You're awesome, coz you have got ${
@@ -96,15 +106,21 @@ class ChatBot extends Component {
                 <>
                   So what do you want to do now? Please enter one of the options
                   here:
-                  <br />- bio
-                  <br />- company
-                  <br />- avatar
-                  <br />- blog site
-                  <br />- location
-                  <br />- can hire
-                  <br />- followers
-                  <br />- following
-                  <br />- reset
+                  <br />- help: Displays this message again.
+                  <br />- bio: Displays the GitHub Bio, if found.
+                  <br />- company: Displays the Company, if found.
+                  <br />- avatar: Displays the GitHub Avatar, if found.
+                  <br />- blog site: Displays the Blog Link, if found.
+                  <br />- location: Displays the Location, if found.
+                  <br />- can hire: Tells if the person can be hired.
+                  <br />- followers: Displays the number of followers of{" "}
+                  {PersonName}
+                  .
+                  <br />- following: Displays the number of people {
+                    PersonName
+                  }{" "}
+                  follows.
+                  <br />- reset: Back to Square one! 😉
                 </>
               ),
               Bot: true
@@ -122,12 +138,43 @@ class ChatBot extends Component {
     }
     if (this.state.ChatBotState === 3) {
       switch (LastMessage) {
+        case "help":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: (
+                  <>
+                    So what do you want to do now? Please enter one of the
+                    options here:
+                    <br />- help: Displays this message again.
+                    <br />- bio: Displays the GitHub Bio, if found.
+                    <br />- company: Displays the Company, if found.
+                    <br />- avatar: Displays the GitHub Avatar, if found.
+                    <br />- blog site: Displays the Blog Link, if found.
+                    <br />- location: Displays the Location, if found.
+                    <br />- can hire: Tells if the person can be hired.
+                    <br />- followers: Displays the number of followers of{" "}
+                    {PersonName}
+                    .
+                    <br />- following: Displays the number of people{" "}
+                    {PersonName} follows.
+                    <br />- reset: Back to Square one! 😉
+                  </>
+                ),
+                Bot: true
+              }
+            ]
+          });
+          break;
         case "bio":
           this.setState({
             Messages: [
               ...this.state.Messages,
               {
-                Text: this.state.GitHubUser.bio,
+                Text: this.state.GitHubUser.bio
+                  ? this.state.GitHubUser.bio
+                  : `${PersonName} hasn't updated their bio.`,
                 Bot: true
               }
             ]
@@ -138,7 +185,9 @@ class ChatBot extends Component {
             Messages: [
               ...this.state.Messages,
               {
-                Text: this.state.GitHubUser.company,
+                Text: this.state.GitHubUser.company
+                  ? `${PersonName} works at ${this.state.GitHubUser.company}`
+                  : `${PersonName} hasn't updated their company.`,
                 Bot: true
               }
             ]
@@ -162,14 +211,15 @@ class ChatBot extends Component {
             ]
           });
           break;
+        case "website":
         case "blog site":
           this.setState({
             Messages: [
               ...this.state.Messages,
               {
-                Text: (
+                Text: this.state.GitHubUser.blog ? (
                   <>
-                    Find {this.state.GitHubUser.login}'s blogs{" "}
+                    {PersonName} writes at{" "}
                     <a
                       href={this.state.GitHubUser.blog}
                       target="_blank"
@@ -179,6 +229,8 @@ class ChatBot extends Component {
                     </a>
                     ...
                   </>
+                ) : (
+                  `${PersonName} hasn't got a blog or website.`
                 ),
                 Bot: true
               }
@@ -190,11 +242,9 @@ class ChatBot extends Component {
             Messages: [
               ...this.state.Messages,
               {
-                Text: `${
-                  this.state.GitHubUser.name
-                    ? this.state.GitHubUser.name
-                    : this.state.GitHubUser.login
-                } lives in ${this.state.GitHubUser.location}`,
+                Text: this.state.GitHubUser.location
+                  ? `${PersonName} lives in ${this.state.GitHubUser.location}`
+                  : `${PersonName} lives somewhere we don't know.`,
                 Bot: true
               }
             ]
@@ -205,11 +255,7 @@ class ChatBot extends Component {
             Messages: [
               ...this.state.Messages,
               {
-                Text: `${
-                  this.state.GitHubUser.name
-                    ? this.state.GitHubUser.name
-                    : this.state.GitHubUser.login
-                } is${
+                Text: `${PersonName} is${
                   this.state.GitHubUser.hireable ? "" : " not"
                 } available for hire.`,
                 Bot: true
@@ -222,11 +268,7 @@ class ChatBot extends Component {
             Messages: [
               ...this.state.Messages,
               {
-                Text: `${
-                  this.state.GitHubUser.name
-                    ? this.state.GitHubUser.name
-                    : this.state.GitHubUser.login
-                } has got ${this.state.GitHubUser.followers} followers.`,
+                Text: `${PersonName} has got ${this.state.GitHubUser.followers} followers.`,
                 Bot: true
               }
             ]
@@ -237,11 +279,7 @@ class ChatBot extends Component {
             Messages: [
               ...this.state.Messages,
               {
-                Text: `${
-                  this.state.GitHubUser.name
-                    ? this.state.GitHubUser.name
-                    : this.state.GitHubUser.login
-                } follows ${this.state.GitHubUser.following} users.`,
+                Text: `${PersonName} follows ${this.state.GitHubUser.following} users.`,
                 Bot: true
               }
             ]
@@ -284,6 +322,11 @@ class ChatBot extends Component {
     );
   };
   render() {
+    const PersonName = this.state.GitHubUser
+      ? this.state.GitHubUser.name
+        ? this.state.GitHubUser.name
+        : this.state.GitHubUser.login
+      : null;
     return (
       <div className="ChatBot-Wrapper">
         {this.state.Open && (
@@ -315,11 +358,7 @@ class ChatBot extends Component {
                 onChange={this.handleGuestMsgChange}
                 placeholder={
                   this.state.GitHubUser
-                    ? `Please write something ${
-                        this.state.GitHubUser.name
-                          ? this.state.GitHubUser.name
-                          : this.state.GitHubUser.login
-                      }...`
+                    ? `Please write something ${PersonName}...`
                     : "Please start typing something..."
                 }
               />
