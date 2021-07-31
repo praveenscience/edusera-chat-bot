@@ -33,6 +33,12 @@
           background-color: #fff;
           margin: 0;
           flex-grow: 1;
+          img {
+            max-width: 512px;
+            margin: 0;
+            background-color: transparent;
+            padding: 0;
+          }
         }
         &.Guest {
           img {
