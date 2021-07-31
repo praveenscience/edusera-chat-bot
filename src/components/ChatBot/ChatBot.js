@@ -63,37 +63,82 @@ class ChatBot extends Component {
       fetch("https://api.github.com/users/" + LastMessage)
         .then(res => res.json())
         .then(GitHubUser => {
-          const Text = `Hey ${GitHubUser.name}! I found you! You're awesome, coz you have got ${GitHubUser.public_repos} public repos! Saving your details!`;
+          const Text = `Hey ${
+            GitHubUser.name ? GitHubUser.name : GitHubUser.login
+          }! I found you! You're awesome, coz you have got ${
+            GitHubUser.public_repos
+          } public repos! Saving your details!`;
+          const NoName = {
+            Text: (
+              <>
+                Hey, {GitHubUser.login}, it seems like you haven't set your
+                name. Would you like to please set one by going to{" "}
+                <a
+                  href="https://github.com/settings/profile"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  your profile settings
+                </a>{" "}
+                after you login?
+              </>
+            ),
+            Bot: true
+          };
+          const Messages = [
+            ...this.state.Messages,
+            {
+              Text,
+              Bot: true
+            },
+            {
+              Text: (
+                <>
+                  So what do you want to do now? Please enter one of the options
+                  here:
+                  <br />- bio
+                  <br />- company
+                  <br />- avatar
+                  <br />- blog site
+                  <br />- location
+                  <br />- can hire
+                  <br />- followers
+                  <br />- following
+                  <br />- reset
+                </>
+              ),
+              Bot: true
+            }
+          ];
+          if (!GitHubUser.name) {
+            Messages.push(NoName);
+          }
           this.setState({
             GitHubUser,
             ChatBotState: 3,
+            Messages
+          });
+        });
+    }
+    if (this.state.ChatBotState === 3) {
+      switch (LastMessage) {
+        case "":
+          break;
+        case "reset":
+        default:
+          this.setState({
+            GitHubUser: null,
+            ChatBotState: 0,
             Messages: [
               ...this.state.Messages,
               {
-                Text,
-                Bot: true
-              },
-              {
-                Text: (
-                  <>
-                    So what do you want to do now? Please enter one of the
-                    options here:
-                    <br />- bio
-                    <br />- company
-                    <br />- avatar
-                    <br />- blog site
-                    <br />- location
-                    <br />- can hire
-                    <br />- followers
-                    <br />- following
-                    <br />- reset
-                  </>
-                ),
+                Text: "Thanks for using my service. Please type start to begin once again...",
                 Bot: true
               }
             ]
           });
-        });
+          break;
+      }
     }
   };
   handleGuestMsgSubmit = e => {
@@ -146,8 +191,12 @@ class ChatBot extends Component {
                 value={this.state.GuestMsg}
                 onChange={this.handleGuestMsgChange}
                 placeholder={
-                  this.state.GitHubUser && this.state.GitHubUser.name
-                    ? `Please write something ${this.state.GitHubUser.name}...`
+                  this.state.GitHubUser
+                    ? `Please write something ${
+                        this.state.GitHubUser.name
+                          ? this.state.GitHubUser.name
+                          : this.state.GitHubUser.login
+                      }...`
                     : "Please start typing something..."
                 }
               />
