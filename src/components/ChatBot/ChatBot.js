@@ -122,7 +122,130 @@ class ChatBot extends Component {
     }
     if (this.state.ChatBotState === 3) {
       switch (LastMessage) {
-        case "":
+        case "bio":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: this.state.GitHubUser.bio,
+                Bot: true
+              }
+            ]
+          });
+          break;
+        case "company":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: this.state.GitHubUser.company,
+                Bot: true
+              }
+            ]
+          });
+          break;
+        case "avatar":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: (
+                  <>
+                    <img
+                      src={this.state.GitHubUser.avatar_url}
+                      alt={`${this.state.GitHubUser.login}'s Avatar`}
+                    />
+                  </>
+                ),
+                Bot: true
+              }
+            ]
+          });
+          break;
+        case "blog site":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: (
+                  <>
+                    Find {this.state.GitHubUser.login}'s blogs{" "}
+                    <a
+                      href={this.state.GitHubUser.blog}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      here
+                    </a>
+                    ...
+                  </>
+                ),
+                Bot: true
+              }
+            ]
+          });
+          break;
+        case "location":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: `${
+                  this.state.GitHubUser.name
+                    ? this.state.GitHubUser.name
+                    : this.state.GitHubUser.login
+                } lives in ${this.state.GitHubUser.location}`,
+                Bot: true
+              }
+            ]
+          });
+          break;
+        case "can hire":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: `${
+                  this.state.GitHubUser.name
+                    ? this.state.GitHubUser.name
+                    : this.state.GitHubUser.login
+                } is${
+                  this.state.GitHubUser.hireable ? "" : " not"
+                } available for hire.`,
+                Bot: true
+              }
+            ]
+          });
+          break;
+        case "followers":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: `${
+                  this.state.GitHubUser.name
+                    ? this.state.GitHubUser.name
+                    : this.state.GitHubUser.login
+                } has got ${this.state.GitHubUser.followers} followers.`,
+                Bot: true
+              }
+            ]
+          });
+          break;
+        case "following":
+          this.setState({
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text: `${
+                  this.state.GitHubUser.name
+                    ? this.state.GitHubUser.name
+                    : this.state.GitHubUser.login
+                } follows ${this.state.GitHubUser.following} users.`,
+                Bot: true
+              }
+            ]
+          });
           break;
         case "reset":
         default:
