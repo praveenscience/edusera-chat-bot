@@ -12,7 +12,8 @@ class ChatBot extends Component {
         Text: "Hey there! I am a ChatBot! Type start to begin...",
         Bot: true
       }
-    ]
+    ],
+    GitHubUser: null
   };
   toggleChatBox = () => {
     this.setState({
@@ -59,6 +60,26 @@ class ChatBot extends Component {
           }
         ]
       });
+      fetch("https://api.github.com/users/" + LastMessage)
+        .then(res => res.json())
+        .then(GitHubUser => {
+          const Text = `Hey ${GitHubUser.name}! I found you! You're awesome, coz you have got ${GitHubUser.public_repos} public repos! Saving your details!`;
+          this.setState({
+            GitHubUser,
+            ChatBotState: 3,
+            Messages: [
+              ...this.state.Messages,
+              {
+                Text,
+                Bot: true
+              },
+              {
+                Text: "So what do you want to do now?",
+                Bot: true
+              }
+            ]
+          });
+        });
     }
   };
   handleGuestMsgSubmit = e => {
